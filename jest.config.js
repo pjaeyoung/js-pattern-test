@@ -1,10 +1,15 @@
 module.exports = {
-  roots: ['<rootDir>'],
-  testMatch: ['**/__tests__/**/*.+(ts|tsx|js)', '**/?(*.)+(spec|test).+(ts|tsx|js)'],
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-  preset: 'ts-jest',
+  moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'json'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.(js|jsx)?$': 'babel-jest',
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
+  },
+  testMatch: [
+    '<rootDir>/**/*.test.(js|jsx|ts|tsx)',
+    '<rootDir>/(tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx))',
+  ],
+  transformIgnorePatterns: ['<rootDir>/node_modules/'],
 };
