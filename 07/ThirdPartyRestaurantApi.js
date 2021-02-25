@@ -1,4 +1,5 @@
 import Aop from '../util/aop.js';
+import { Aspects } from '../08/MemoizedRestaurantApiAOP';
 
 const ThirdParty = {};
 
@@ -17,6 +18,19 @@ ThirdParty.restaurantApi = function () {
     },
   };
 };
+
+// getRestauransWithRadius에 메모이제이션 패턴 적용
+Aop.around(
+  'restaurantApi',
+  function addMemoizationToGetRestaurantsWithinRadius(targetInfo) {
+    // ThirdParty.restaurantApi()가 반환한 원본 API
+    const api = Aop.next.call(this, targetInfo);
+    // getRestaurantsWithinRadius 함수를 장식하여 메모이제이션 추가
+    Aop.around('getRestaurantsWithinRadius', Aspects.returnValueCache().advice, [api]);
+    return api;
+  },
+  [ThirdParty],
+);
 
 // address 인자는 콘퍼런스 행사장, '근처 음식점'은 3km 이내로 radiusMiles 값도 일정
 Aop.around(
